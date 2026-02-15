@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balloon Pop</title>
+
+    <style>
+        body{
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+            background: #87ceeb;
+            cursor: pointer;
+        }
+
+        button{
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+
+        .balloon{
+            position: absolute;
+            width: 60px;
+            height: 80px;
+            border-radius: 50%;
+            animation: floatUp 5s linear forwards;
+        }
+
+        @keyframes floatUp{
+            to{
+                transform: translateY(-110vh);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <button onclick="startGame()">Start</button>
+    <button onclick="stopGame()">Stop</button>
+</body>
+
+<script>
+    let gameTimer = null;
+    function spawnBalloon(){
+        const balloon = document.createElement("div");
+        balloon.className = "balloon";
+
+        balloon.style.left = Math.random() * 90 + "vw";
+        balloon.style.top = "100vh";
+        balloon.style.backgroundColor =
+            `hsl(${Math.random() * 360}, 80%, 60%)`;
+
+        balloon.onclick = (e) => {
+            e.stopPropagation();
+            balloon.remove();
+        };
+
+        document.body.appendChild(balloon);
+
+        setTimeout(() => {
+            balloon.remove();
+        }, 5000);
+    }
+
+    function startGame() {
+        if (!gameTimer){
+            gameTimer = setInterval(spawnBalloon, 700);
+        }
+    }
+
+    function stopGame() {
+        clearInterval(gameTimer);
+        gameTimer = null;
+    }
+</script>
+
+</body>
+</html>
+
