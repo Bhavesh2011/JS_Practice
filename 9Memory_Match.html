@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Match</title>
+    <style>
+        body{text-align:center;
+            font-family: Arial;
+            background: #e5ecff;
+            padding-top:30px;
+        }
+        #game {
+            display: grid;
+            grid-template-columns: repeat(2, 80px);
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .card {
+            width:80px;
+            height: 80px;
+            background: #4a6cf7;
+            color: white;
+            font-size: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h2 id="status">Find the Match</h2>
+    <div id="game"></div>
+    <script>
+        let items=["🐱","🐶","🐱","🐶"];
+        items.sort(() => Math.random() - 0.5);
+
+        let firstCard = null;
+        let secondCard = null;
+
+        const game = document.getElementById("game");
+        const status = document.getElementById("status");
+
+        items.forEach(item => {
+            const card = document.createElement("div");
+            card.className = "card";
+            card.textContent = "?";
+
+            card.onclick = () => {
+                if (card.textContent !== "?" || secondCard) return;
+                card.textContent = item;
+
+                if (!firstCard) {
+                    firstCard = card;
+                } else {
+                    secondCard = card;
+                    if(firstCard.textContent === secondCard.textContent){
+                        status.textContent = "Matched!";
+                        firstCard = null;
+                        secondCard = null;
+                    } else {
+                        status.textContent = "Try Again";
+                        setTimeout(() => {
+                            firstCard.textContent = "?";
+                            secondCard.textContent = "?";
+                            firstCard = null;
+                            secondCard = null;
+                        }, 800);
+                    }
+                }
+            };
+            game.appendChild(card);
+        });
+    </script>
+</body>
+</html>
